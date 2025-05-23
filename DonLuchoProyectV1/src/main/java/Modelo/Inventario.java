@@ -25,14 +25,6 @@ public class Inventario {
         this.estado = estado;
     }
 
-    public void ingresarItem(int cantidad) {
-        this.cantidad += cantidad;
-    }
-
-    public void venderItem(int cantidad) {
-        this.cantidad -= cantidad;
-    }
-
     // Getters y Setters
     public int getIdInventario() { return idInventario; }
     public void setIdInventario(int idInventario) { this.idInventario = idInventario; }
@@ -49,3 +41,6 @@ public class Inventario {
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
 }
+
+
+ 

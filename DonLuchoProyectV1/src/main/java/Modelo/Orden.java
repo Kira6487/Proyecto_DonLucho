@@ -29,14 +29,6 @@ public class Orden {
         this.total = total;
     }
 
-    public void enviarPedido() {
-        System.out.println("Pedido enviado.");
-    }
-
-    public void cancelarPedido() {
-        System.out.println("Pedido cancelado.");
-    }
-
     // Getters y Setters
     public int getIdOrden() { return idOrden; }
     public void setIdOrden(int idOrden) { this.idOrden = idOrden; }
@@ -56,4 +48,3 @@ public class Orden {
     public double getTotal() { return total; }
     public void setTotal(double total) { this.total = total; }
 }
-

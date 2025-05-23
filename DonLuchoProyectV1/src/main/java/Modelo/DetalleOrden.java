@@ -43,10 +43,12 @@ public class DetalleOrden {
     public void setNombreProducto(String nombreProducto) { this.nombreProducto = nombreProducto; }
 
     public int getCantidad() { return cantidad; }
-    public void setCantidad(int cantidad) { this.cantidad = cantidad; this.subtotal = cantidad * precio; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
     public double getPrecio() { return precio; }
-    public void setPrecio(double precio) { this.precio = precio; this.subtotal = cantidad * precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
 
     public double getSubtotal() { return subtotal; }
+    public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
 }
+

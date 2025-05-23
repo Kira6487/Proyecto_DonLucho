@@ -27,31 +27,22 @@ public class Producto {
         this.condicion = condicion;
     }
 
-    public int getIdProducto() {
-        return idProducto;
-    }
+    // Getters y Setters
+    public int getIdProducto() { return idProducto; }
+    public void setIdProducto(int idProducto) { this.idProducto = idProducto; }
 
-    public String getNombreProducto() {
-        return nombreProducto;
-    }
+    public String getNombreProducto() { return nombreProducto; }
+    public void setNombreProducto(String nombreProducto) { this.nombreProducto = nombreProducto; }
 
-    public int getCantidad() {
-        return cantidad;
-    }
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
-    public double getPrecio() {
-        return precio;
-    }
+    public double getPrecio() { return precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
 
-    public String getCategoria() {
-        return categoria;
-    }
+    public String getCategoria() { return categoria; }
+    public void setCategoria(String categoria) { this.categoria = categoria; }
 
-    public String getCondicion() {
-        return condicion;
-    }
-
-    public String toString() {
-        return idProducto + " - " + nombreProducto + " - " + precio + " - " + categoria + " - " + condicion;
-    }
+    public String getCondicion() { return condicion; }
+    public void setCondicion(String condicion) { this.condicion = condicion; }
 }

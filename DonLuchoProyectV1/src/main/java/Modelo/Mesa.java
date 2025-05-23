@@ -23,14 +23,6 @@ public class Mesa {
         this.estado = estado;
     }
 
-    public void seleccionarMesa() {
-        this.estado = "ocupada";
-    }
-
-    public void liberarMesa() {
-        this.estado = "libre";
-    }
-
     // Getters y Setters
     public int getIdMesa() { return idMesa; }
     public void setIdMesa(int idMesa) { this.idMesa = idMesa; }
@@ -44,3 +36,4 @@ public class Mesa {
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
 }
+
