@@ -7,7 +7,9 @@ package vista;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import modelo.Usuario;
+import Controlador.ControladorLogin;
 import Vista.Navegador;
 
 public class VistaLogin extends JFrame {
@@ -15,9 +17,11 @@ public class VistaLogin extends JFrame {
     private JTextField campoCodigo;
     private JButton botonIngresar;
     private Navegador navegador;
+    private ControladorLogin controlador;
 
     public VistaLogin(Navegador navegador) {
         this.navegador = navegador;
+        this.controlador = new ControladorLogin();
 
         setTitle("Login - Don Lucho");
         setSize(300, 150);
@@ -37,26 +41,25 @@ public class VistaLogin extends JFrame {
 
         add(panel);
 
+        // Listener para botón Ingresar
         botonIngresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String codigo = campoCodigo.getText().trim();
-                if (codigo.isEmpty()) {
+                String codigoTexto = campoCodigo.getText().trim();
+                if (codigoTexto.isEmpty()) {
                     JOptionPane.showMessageDialog(VistaLogin.this, "Por favor ingresa un código de acceso.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                Usuario usuario = null;
-
-                if (codigo.equalsIgnoreCase("admin")) {
-                  usuario = new Usuario("admin", "Administrador", "admin");
-
-
-                } else if (codigo.equalsIgnoreCase("cajero")) {
-                    usuario = new Usuario("cajero", "Cajero", "cajero");
-                } else if (codigo.equalsIgnoreCase("mesero")) {
-                    usuario = new Usuario("mesero", "Mesero", "mesero");
+                int codigoAcceso = 0;
+                try {
+                    codigoAcceso = Integer.parseInt(codigoTexto);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(VistaLogin.this, "El código debe ser numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
+
+                Usuario usuario = controlador.login(codigoAcceso);
 
                 if (usuario != null) {
                     navegador.setUsuarioActual(usuario);
@@ -69,4 +72,5 @@ public class VistaLogin extends JFrame {
         });
     }
 }
+
 

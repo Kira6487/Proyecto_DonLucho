@@ -16,28 +16,33 @@ public class ControladorLogin {
     private Usuario usuarioActual;
 
     public Usuario login(int codigoAcceso) {
-        try (BufferedReader br = new BufferedReader(new FileReader("data/Datos_Usuario.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("D:\\NetBeansProyects\\Proyecto_DonLucho\\DonLuchoProyectV1\\src\\main\\java\\data\\Datos_Usuario.txt"))) {
             String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split("\\s+");
-                if (datos.length >= 4) {
-                    int codigo = Integer.parseInt(datos[2]);
-                    if (codigo == codigoAcceso) {
-                        usuarioActual = new Usuario(
-                            Integer.parseInt(datos[0]),
-                            datos[1],
-                            codigo,
-                            datos[3]
-                        );
-                        return usuarioActual;
-                    }
+            linea = br.readLine();
+
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split("\\s+");
+            if (datos.length >= 4) {
+                int codigo = Integer.parseInt(datos[2]);
+                if (codigo == codigoAcceso) {
+                    usuarioActual = new Usuario(
+                        Integer.parseInt(datos[0]),
+                        datos[1],
+                        codigo,
+                        datos[3]
+                    );
+                    return usuarioActual;
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo de usuarios: " + e.getMessage());
         }
-        return null;
+    } catch (IOException e) {
+        System.out.println("Error al leer el archivo de usuarios: " + e.getMessage());
+    } catch (NumberFormatException e) {
+        System.out.println("Error al convertir código de acceso: " + e.getMessage());
     }
+    return null;
+}
+    
 
     public Usuario getUsuarioActual() {
         return usuarioActual;
