@@ -7,7 +7,6 @@ package Vista;
 import Modelo.Orden;
 import modelo.Usuario;
 import javax.swing.*;
-import vista.VistaLogin;
 
 public class Navegador {
 

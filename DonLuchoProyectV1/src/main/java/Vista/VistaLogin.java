@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vista;
+package Vista;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,6 @@ import java.awt.event.*;
 
 import modelo.Usuario;
 import Controlador.ControladorLogin;
-import Vista.Navegador;
 
 public class VistaLogin extends JFrame {
 
@@ -63,8 +62,10 @@ public class VistaLogin extends JFrame {
 
                 if (usuario != null) {
                     navegador.setUsuarioActual(usuario);
-                    JOptionPane.showMessageDialog(VistaLogin.this, "Login exitoso como " + usuario.getRol() + ".");
-                    navegador.mostrarVistaMesas();
+                       JOptionPane.showMessageDialog(VistaLogin.this, "Login exitoso como " + usuario.getRol() + ".");
+                        dispose(); // Cierra la ventana de login
+                         new VistaMenuPrincipal(navegador, usuario);
+    
                 } else {
                     JOptionPane.showMessageDialog(VistaLogin.this, "Código de acceso inválido.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
