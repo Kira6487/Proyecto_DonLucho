@@ -4,16 +4,10 @@
  */
 package Vista;
 
-/**
- *
- * @author eduar
- */
-
-import Modelo.Mesa;
 import Modelo.Orden;
 import modelo.Usuario;
-import controlador.*;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import vista.VistaLogin;
 
 public class Navegador {
 
@@ -24,66 +18,58 @@ public class Navegador {
     private VistaOrden vistaOrden;
     private VistaInventario vistaInventario;
     private VistaBoleta vistaBoleta;
+    private JFrame vistaActual;
 
     public Navegador() {
-        // Inicializamos las vistas pasando el navegador para permitir navegación entre vistas
-        vistaLogin = new VistaLogin(this);
-        vistaMesas = new VistaMesas(this);
-        vistaOrden = new VistaOrden(this);
-        vistaInventario = new VistaInventario(this);
-        vistaBoleta = new VistaBoleta(this);
-        
-        // Al iniciar, mostrar login
-        mostrarVistaLogin();
+        mostrarLogin();
     }
 
-    public void mostrarVistaLogin() {
-        vistaLogin.setVisible(true);
-        vistaMesas.setVisible(false);
-        vistaOrden.setVisible(false);
-        vistaInventario.setVisible(false);
-        vistaBoleta.setVisible(false);
+    public void mostrarLogin() {
+        vistaLogin = new VistaLogin(this);
+        cambiarVista(vistaLogin);
     }
 
     public void mostrarVistaMesas() {
-        vistaLogin.setVisible(false);
-        vistaMesas.setVisible(true);
-        vistaOrden.setVisible(false);
-        vistaInventario.setVisible(false);
-        vistaBoleta.setVisible(false);
+        vistaMesas = new VistaMesas(10, this); // 10 mesas como ejemplo
+        cambiarVista(vistaMesas);
     }
 
     public void mostrarVistaOrden(int idMesa) {
-        vistaLogin.setVisible(false);
-        vistaMesas.setVisible(false);
-        vistaOrden.setVisible(true);
-        vistaOrden.setMesaSeleccionada(idMesa); // método para asignar la mesa seleccionada en VistaOrden
-        vistaInventario.setVisible(false);
-        vistaBoleta.setVisible(false);
+        if (vistaOrden == null) {
+            vistaOrden = new VistaOrden(this);
+        }
+        vistaOrden.setMesaSeleccionada(idMesa);
+        cambiarVista(vistaOrden);
     }
 
     public void mostrarVistaInventario() {
-        if (!usuarioActual.getRol().equalsIgnoreCase("Administrador")) {
-            JOptionPane.showMessageDialog(null, "Acceso denegado. Solo administradores pueden acceder.");
-            return;
+        if (usuarioActual != null && usuarioActual.getRol().equalsIgnoreCase("admin")) {
+            if (vistaInventario == null) {
+                vistaInventario = new VistaInventario(this);
+            }
+            cambiarVista(vistaInventario);
+        } else {
+            JOptionPane.showMessageDialog(null, "Acceso denegado: solo administradores");
         }
-        vistaLogin.setVisible(false);
-        vistaMesas.setVisible(false);
-        vistaOrden.setVisible(false);
-        vistaInventario.setVisible(true);
-        vistaBoleta.setVisible(false);
     }
 
     public void mostrarVistaBoleta() {
-        if (!usuarioActual.getRol().equalsIgnoreCase("Cajero")) {
-            JOptionPane.showMessageDialog(null, "Acceso denegado. Solo cajeros pueden acceder.");
-            return;
+        if (usuarioActual != null && usuarioActual.getRol().equalsIgnoreCase("cajero")) {
+            if (vistaBoleta == null) {
+                vistaBoleta = new VistaBoleta(this);
+            }
+            cambiarVista(vistaBoleta);
+        } else {
+            JOptionPane.showMessageDialog(null, "Acceso denegado: solo cajeros");
         }
-        vistaLogin.setVisible(false);
-        vistaMesas.setVisible(false);
-        vistaOrden.setVisible(false);
-        vistaInventario.setVisible(false);
-        vistaBoleta.setVisible(true);
+    }
+
+    private void cambiarVista(JFrame nuevaVista) {
+        if (vistaActual != null) {
+            vistaActual.dispose();
+        }
+        vistaActual = nuevaVista;
+        vistaActual.setVisible(true);
     }
 
     public void setUsuarioActual(Usuario usuario) {
@@ -91,7 +77,12 @@ public class Navegador {
     }
 
     public Usuario getUsuarioActual() {
-        return this.usuarioActual;
+        return usuarioActual;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(Navegador::new);
     }
 }
+
 

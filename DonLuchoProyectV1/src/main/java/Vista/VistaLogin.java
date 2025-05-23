@@ -7,13 +7,13 @@ package vista;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import modelo.Usuario;
 import Vista.Navegador;
 
 public class VistaLogin extends JFrame {
 
-    public JTextField campoCodigo;
-    public JButton botonIngresar;
-
+    private JTextField campoCodigo;
+    private JButton botonIngresar;
     private Navegador navegador;
 
     public VistaLogin(Navegador navegador) {
@@ -31,14 +31,12 @@ public class VistaLogin extends JFrame {
         campoCodigo = new JTextField();
         panel.add(campoCodigo);
 
-        // Añadimos un espacio vacío para alinear el botón mejor
         panel.add(new JLabel(""));
         botonIngresar = new JButton("Ingresar");
         panel.add(botonIngresar);
 
         add(panel);
 
-        // Listener para el botón Ingresar
         botonIngresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,34 +46,27 @@ public class VistaLogin extends JFrame {
                     return;
                 }
 
-                // Aquí se debería llamar al controlador para validar el usuario
-                // Por ejemplo:
-                // Usuario usuario = ControladorUsuario.validarCodigo(codigo);
-                // if(usuario != null) { 
-                //     navegador.setUsuarioActual(usuario);
-                //     navegador.mostrarVistaMesas();
-                // } else {
-                //     JOptionPane.showMessageDialog(VistaLogin.this, "Código de acceso inválido.", "Error", JOptionPane.ERROR_MESSAGE);
-                // }
+                Usuario usuario = null;
 
-                // Por ahora simulamos acceso válido si el código es "admin"
                 if (codigo.equalsIgnoreCase("admin")) {
-                    // Simular creación usuario administrador
-                    JOptionPane.showMessageDialog(VistaLogin.this, "Login exitoso como Administrador.");
-                    navegador.mostrarVistaMesas();
+                  usuario = new Usuario("admin", "Administrador", "admin");
+
+
                 } else if (codigo.equalsIgnoreCase("cajero")) {
-                    JOptionPane.showMessageDialog(VistaLogin.this, "Login exitoso como Cajero.");
-                    navegador.mostrarVistaMesas();
+                    usuario = new Usuario("cajero", "Cajero", "cajero");
                 } else if (codigo.equalsIgnoreCase("mesero")) {
-                    JOptionPane.showMessageDialog(VistaLogin.this, "Login exitoso como Mesero.");
+                    usuario = new Usuario("mesero", "Mesero", "mesero");
+                }
+
+                if (usuario != null) {
+                    navegador.setUsuarioActual(usuario);
+                    JOptionPane.showMessageDialog(VistaLogin.this, "Login exitoso como " + usuario.getRol() + ".");
                     navegador.mostrarVistaMesas();
                 } else {
                     JOptionPane.showMessageDialog(VistaLogin.this, "Código de acceso inválido.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-
-        setVisible(true);
     }
 }
 

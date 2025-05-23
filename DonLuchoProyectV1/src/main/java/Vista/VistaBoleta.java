@@ -14,21 +14,32 @@ import java.awt.*;
 
 public class VistaBoleta extends JFrame {
     public JTextArea areaBoleta;
-    public JButton botonGenerarBoleta;
+    public JButton botonImprimir;
+    public JButton botonCerrar;
 
     public VistaBoleta() {
-        setTitle("Generar Boleta - Don Lucho");
+        setTitle("Boleta - Don Lucho");
         setSize(400, 300);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         areaBoleta = new JTextArea();
+        areaBoleta.setEditable(false);
         JScrollPane scroll = new JScrollPane(areaBoleta);
 
-        botonGenerarBoleta = new JButton("Generar Boleta");
+        botonImprimir = new JButton("Imprimir");
+        botonCerrar = new JButton("Cerrar");
+
+        JPanel panelBotones = new JPanel();
+        panelBotones.add(botonImprimir);
+        panelBotones.add(botonCerrar);
 
         add(scroll, BorderLayout.CENTER);
-        add(botonGenerarBoleta, BorderLayout.SOUTH);
+        add(panelBotones, BorderLayout.SOUTH);
         setVisible(true);
+    }
+
+    VistaBoleta(Navegador aThis) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

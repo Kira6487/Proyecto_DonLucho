@@ -22,6 +22,10 @@ public class Usuario {
         this.rol = rol;
     }
 
+    public Usuario(String admin, String administrador, String admin0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public int getIdUsuario() {
         return idUsuario;
     }
