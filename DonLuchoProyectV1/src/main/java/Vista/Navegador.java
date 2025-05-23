@@ -34,12 +34,10 @@ public class Navegador {
     }
 
     public void mostrarVistaOrden(int idMesa) {
-        if (vistaOrden == null) {
-            vistaOrden = new VistaOrden(this);
-        }
-        vistaOrden.setMesaSeleccionada(idMesa);
-        cambiarVista(vistaOrden);
-    }
+    vistaOrden = new VistaOrden(this, idMesa);
+    cambiarVista(vistaOrden);
+}
+
 
     public void mostrarVistaInventario() {
         if (usuarioActual != null && usuarioActual.getRol().equalsIgnoreCase("admin")) {

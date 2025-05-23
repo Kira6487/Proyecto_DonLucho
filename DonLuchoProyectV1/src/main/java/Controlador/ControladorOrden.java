@@ -12,9 +12,11 @@ package Controlador;
 
 import Modelo.DetalleOrden;
 import Modelo.Orden;
+import Modelo.Producto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ControladorOrden {
 
@@ -31,6 +33,23 @@ public class ControladorOrden {
             this.siguiente = null;
         }
     }
+    
+        public boolean agregarProductoAOrden(int idOrden, Producto producto, int cantidad) {
+        if (producto == null || cantidad <= 0) return false;
+
+        DetalleOrden detalle = new DetalleOrden(
+            generarIdDetalle(), idOrden,
+            producto.getIdProducto(), producto.getNombreProducto(),
+            cantidad, producto.getPrecio()
+        );
+        return agregarDetalleAOrden(idOrden, detalle);
+    }
+
+        // Generador simple de ID para DetalleOrden
+            private int generarIdDetalle() {
+            return new Random().nextInt(9000) + 1000;
+        }
+
 
     public void agregarOrden(Orden nuevaOrden) {
         NodoOrden nuevoNodo = new NodoOrden(nuevaOrden);
