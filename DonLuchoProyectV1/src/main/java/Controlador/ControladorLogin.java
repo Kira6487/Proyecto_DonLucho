@@ -4,45 +4,40 @@
  */
 package Controlador;
 
-/**
- *
- * @author eduar
- */
-
-import modelo.*;
+import modelo.Usuario;
 import java.io.*;
 
 public class ControladorLogin {
     private Usuario usuarioActual;
 
     public Usuario login(int codigoAcceso) {
-        try (BufferedReader br = new BufferedReader(new FileReader("D:\\NetBeansProyects\\Proyecto_DonLucho\\DonLuchoProyectV1\\src\\main\\java\\data\\Datos_Usuario.txt"))) {
-            String linea;
-            linea = br.readLine();
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("data/Datos_Usuario.txt");
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 
-        while ((linea = br.readLine()) != null) {
-            String[] datos = linea.split("\\s+");
-            if (datos.length >= 4) {
-                int codigo = Integer.parseInt(datos[2]);
-                if (codigo == codigoAcceso) {
-                    usuarioActual = new Usuario(
-                        Integer.parseInt(datos[0]),
-                        datos[1],
-                        codigo,
-                        datos[3]
-                    );
-                    return usuarioActual;
+            String linea = br.readLine(); // Saltar encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.trim().split("\\s+");
+                if (datos.length >= 4) {
+                    int codigo = Integer.parseInt(datos[2]);
+                    if (codigo == codigoAcceso) {
+                        usuarioActual = new Usuario(
+                            Integer.parseInt(datos[0]),
+                            datos[1],
+                            codigo,
+                            datos[3]
+                        );
+                        return usuarioActual;
+                    }
                 }
             }
+        } catch (IOException | NullPointerException e) {
+            System.out.println("Error al leer el archivo de usuarios: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error al convertir código de acceso: " + e.getMessage());
         }
-    } catch (IOException e) {
-        System.out.println("Error al leer el archivo de usuarios: " + e.getMessage());
-    } catch (NumberFormatException e) {
-        System.out.println("Error al convertir código de acceso: " + e.getMessage());
+        return null;
     }
-    return null;
-}
-    
 
     public Usuario getUsuarioActual() {
         return usuarioActual;
@@ -66,5 +61,3 @@ public class ControladorLogin {
         this.usuarioActual = usuario;
     }
 }
-
-

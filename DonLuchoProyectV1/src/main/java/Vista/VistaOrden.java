@@ -21,15 +21,21 @@ public class VistaOrden extends JFrame {
     private LinkedList<Producto> productos;
     private LinkedList<DetalleOrden> detalles;
     private int idDetalle = 1;
+    private int idMesaSeleccionada = -1;
 
     public VistaOrden() {
+        this(null, -1);
+    }
+
+    public VistaOrden(Navegador nav, int idMesa) {
         setTitle("Orden - Don Lucho");
         setSize(800, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        productos = cargarProductos("D:\\NetBeansProyects\\Proyecto_DonLucho\\DonLuchoProyectV1\\src\\main\\java\\data\\BD_DonLucho.txt");
+        this.idMesaSeleccionada = idMesa;
+        productos = cargarProductosDesdeRecurso();
         detalles = new LinkedList<>();
 
         // Panel de ingreso de productos
@@ -37,7 +43,7 @@ public class VistaOrden extends JFrame {
         panelDerecho.setBorder(BorderFactory.createTitledBorder("Agregar Producto"));
 
         txtBuscar = new JTextField();
-        comboCondicion = new JComboBox<>(new String[] {"Local", "Llevar"});
+        comboCondicion = new JComboBox<>(new String[]{"Local", "Llevar"});
         JButton btnAgregar = new JButton("Agregar a Orden");
 
         panelDerecho.add(new JLabel("Nombre o ID:"));
@@ -60,15 +66,12 @@ public class VistaOrden extends JFrame {
         setVisible(true);
     }
 
-    VistaOrden(Navegador aThis, int idMesa) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private LinkedList<Producto> cargarProductos(String path) {
+    private LinkedList<Producto> cargarProductosDesdeRecurso() {
         LinkedList<Producto> lista = new LinkedList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String linea;
-            br.readLine(); // Saltar encabezado
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("data/BD_DonLucho.txt");
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+
+            String linea = br.readLine(); // Saltar encabezado
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.trim().split("\\s{2,}");
                 if (datos.length == 6) {
@@ -81,8 +84,8 @@ public class VistaOrden extends JFrame {
                     lista.add(new Producto(id, nombre, cantidad, precio, categoria, condicion));
                 }
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error al leer archivo: " + e.getMessage());
+        } catch (IOException | NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "Error al leer archivo de productos: " + e.getMessage());
         }
         return lista;
     }
@@ -90,13 +93,15 @@ public class VistaOrden extends JFrame {
     private void agregarProducto() {
         String texto = txtBuscar.getText().trim().toLowerCase();
         String condicion = comboCondicion.getSelectedItem().toString();
+
         for (Producto p : productos) {
             boolean coincideNombre = p.getNombreProducto().toLowerCase().contains(texto);
             boolean coincideID = String.valueOf(p.getIdProducto()).equals(texto);
             boolean coincideCondicion = p.getCondicion().equalsIgnoreCase(condicion);
 
             if ((coincideNombre || coincideID) && coincideCondicion) {
-                DetalleOrden detalle = new DetalleOrden(idDetalle++, 1, p.getIdProducto(), p.getNombreProducto(), 1, p.getPrecio());
+                DetalleOrden detalle = new DetalleOrden(idDetalle++, idMesaSeleccionada, p.getIdProducto(),
+                        p.getNombreProducto(), 1, p.getPrecio());
                 detalles.add(detalle);
                 actualizarVistaOrden();
                 txtBuscar.setText("");
@@ -110,12 +115,15 @@ public class VistaOrden extends JFrame {
         areaOrden.setText("");
         for (DetalleOrden d : detalles) {
             areaOrden.append("[" + d.getIdDetalle() + "] " + d.getNombreProducto() +
-                             " x" + d.getCantidad() + " = S/" + d.getSubtotal() + "\n");
+                    " x" + d.getCantidad() + " = S/" + d.getSubtotal() + "\n");
         }
+    }
+
+    public void setMesaSeleccionada(int idMesa) {
+        this.idMesaSeleccionada = idMesa;
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(VistaOrden::new);
     }
 }
-

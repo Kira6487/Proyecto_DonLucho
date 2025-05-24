@@ -18,29 +18,34 @@ public class ControladorProducto {
     private List<Producto> productos;
 
     public ControladorProducto() {
-        productos = new ArrayList<>();
-        cargarProductosDesdeArchivo("D:\\NetBeansProyects\\Proyecto_DonLucho\\DonLuchoProyectV1\\src\\main\\java\\data\\BD_DonLucho.txt");
-    }
+    productos = new ArrayList<>();
+    cargarProductosDesdeArchivo();
+}
 
-    private void cargarProductosDesdeArchivo(String ruta) {
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
-            String linea = br.readLine(); // Saltar encabezado
-            while ((linea = br.readLine()) != null) {
-                String[] partes = linea.trim().split("\\s{2,}"); // Separador: dos o más espacios
-                if (partes.length == 6) {
-                    int id = Integer.parseInt(partes[0]);
-                    String nombre = partes[1];
-                    int cantidad = Integer.parseInt(partes[2]);
-                    double precio = Double.parseDouble(partes[3]);
-                    String categoria = partes[4];
-                    String condicion = partes[5];
-                    productos.add(new Producto(id, nombre, cantidad, precio, categoria, condicion));
-                }
+
+    private void cargarProductosDesdeArchivo() {
+    try (InputStream is = getClass().getClassLoader().getResourceAsStream("data/BD_DonLucho.txt");
+         BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+
+        String linea = br.readLine(); // Saltar encabezado
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.trim().split("\\s{2,}"); // Dos o más espacios
+            if (partes.length == 6) {
+                int id = Integer.parseInt(partes[0]);
+                String nombre = partes[1];
+                int cantidad = Integer.parseInt(partes[2]);
+                double precio = Double.parseDouble(partes[3]);
+                String categoria = partes[4];
+                String condicion = partes[5];
+                productos.add(new Producto(id, nombre, cantidad, precio, categoria, condicion));
             }
-        } catch (IOException e) {
-            System.err.println("Error leyendo archivo: " + e.getMessage());
         }
+
+    } catch (IOException | NullPointerException e) {
+        System.err.println("Error leyendo archivo: " + e.getMessage());
     }
+}
+
 
     public Producto buscarPorId(int id) {
         for (Producto p : productos) {
