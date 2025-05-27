@@ -4,17 +4,15 @@
  */
 package Controlador;
 
-/**
- *
- * @author eduar
- */
 public class NodoVista {
     private String vista;
     private NodoVista siguiente;
+    private NodoVista anterior;
 
     public NodoVista(String vista) {
         this.vista = vista;
         this.siguiente = null;
+        this.anterior = null;
     }
 
     public String getVista() {
@@ -27,5 +25,13 @@ public class NodoVista {
 
     public void setSiguiente(NodoVista siguiente) {
         this.siguiente = siguiente;
+    }
+
+    public NodoVista getAnterior() {
+        return anterior;
+    }
+
+    public void setAnterior(NodoVista anterior) {
+        this.anterior = anterior;
     }
 }

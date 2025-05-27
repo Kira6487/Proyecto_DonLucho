@@ -7,6 +7,8 @@ package Vista;
 
 import Modelo.Producto;
 import Modelo.DetalleOrden;
+import Controlador.ListaVistas;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +24,9 @@ public class VistaOrden extends JFrame {
     private LinkedList<DetalleOrden> detalles;
     private int idDetalle = 1;
     private int idMesaSeleccionada = -1;
+    private ListaVistas historial;
+    private JLabel lblVistaActual;
+
 
     public VistaOrden() {
         this(null, -1);
@@ -33,6 +38,9 @@ public class VistaOrden extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        historial = new ListaVistas();
+        historial.agregarVista("VistaOrden");
+
 
         this.idMesaSeleccionada = idMesa;
         productos = cargarProductosDesdeRecurso();
@@ -62,8 +70,40 @@ public class VistaOrden extends JFrame {
         add(panelDerecho, BorderLayout.EAST);
 
         btnAgregar.addActionListener(e -> agregarProducto());
+        
+        // Panel de navegación de vistas
+        JPanel panelNavegacion = new JPanel(new FlowLayout());
+
+        JButton btnAtras = new JButton("← Atrás");
+        JButton btnAdelante = new JButton("Adelante →");
+
+        lblVistaActual = new JLabel("Vista actual: " + historial.getVistaActual());
+
+        panelNavegacion.add(btnAtras);
+        panelNavegacion.add(btnAdelante);
+        panelNavegacion.add(lblVistaActual);
+        add(panelNavegacion, BorderLayout.SOUTH);
 
         setVisible(true);
+        
+                btnAtras.addActionListener(e -> {
+            try {
+                historial.retrocederVista();
+                lblVistaActual.setText("Vista actual: " + historial.getVistaActual());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "No hay vistas anteriores.");
+            }
+        });
+
+        btnAdelante.addActionListener(e -> {
+            try {
+                historial.avanzarVista();
+                lblVistaActual.setText("Vista actual: " + historial.getVistaActual());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "No hay más vistas.");
+            }
+        });
+
     }
 
     private LinkedList<Producto> cargarProductosDesdeRecurso() {

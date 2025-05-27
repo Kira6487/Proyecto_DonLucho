@@ -4,58 +4,62 @@
  */
 package Controlador;
 
-/**
- *
- * @author eduar
- */
-
 import java.util.NoSuchElementException;
 
 public class ListaVistas {
-    private NodoVista cabeza;
+    private NodoVista actual;
 
     public ListaVistas() {
-        this.cabeza = null;
+        this.actual = null;
     }
 
-    // Agrega una nueva vista al final de la lista
-    public void agregarVista(String vista) {
-        NodoVista nuevo = new NodoVista(vista);
-        if (cabeza == null) {
-            cabeza = nuevo;
+        public void agregarVista(String vista) {
+        NodoVista nuevaVista = new NodoVista(vista);
+        if (actual == null) {
+            actual = nuevaVista;
         } else {
-            NodoVista actual = cabeza;
-            while (actual.getSiguiente() != null) {
-                actual = actual.getSiguiente();
+            NodoVista temp = actual;
+            while (temp.getSiguiente() != null) {
+                temp = temp.getSiguiente();
             }
-            actual.setSiguiente(nuevo);
+            temp.setSiguiente(nuevaVista);
+            nuevaVista.setAnterior(temp);
+            // No mover el puntero actual aquí
         }
     }
 
-    // Elimina la primera vista (navega a la siguiente)
+
     public void avanzarVista() {
-        if (cabeza == null) {
+        if (actual == null || actual.getSiguiente() == null) {
             throw new NoSuchElementException("No hay vistas para avanzar.");
         }
-        cabeza = cabeza.getSiguiente();
+        actual = actual.getSiguiente();
     }
 
-    // Obtiene la vista actual
+    public void retrocederVista() {
+        if (actual == null || actual.getAnterior() == null) {
+            throw new NoSuchElementException("No hay vistas anteriores.");
+        }
+        actual = actual.getAnterior();
+    }
+
     public String getVistaActual() {
-        if (cabeza == null) {
+        if (actual == null) {
             return "No hay vistas disponibles";
         }
-        return cabeza.getVista();
+        return actual.getVista();
     }
 
-    // Reinicia la lista de vistas
     public void reiniciar() {
-        cabeza = null;
+        actual = null;
     }
 
-    // Verifica si hay más vistas por recorrer
     public boolean hayMasVistas() {
-        return cabeza != null;
+        return actual != null && actual.getSiguiente() != null;
+    }
+
+    public boolean hayVistaAnterior() {
+        return actual != null && actual.getAnterior() != null;
     }
 }
 
